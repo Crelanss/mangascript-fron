@@ -1,5 +1,5 @@
 import React, {createContext} from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -11,22 +11,21 @@ import {BrowserRouter} from 'react-router-dom';
 
 export const Context = createContext(null)
 
-ReactDOM
-    .createRoot(document.getElementById("root"))
-    .render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <Context.Provider value={{
-                    user: new UserStore(),
-                    manga: new MangaStore(),
-                    cart: new CartStore(),
-                    orders: new OrdersStore()
-                }}>
-                    <App/>
-                </Context.Provider>
-            </BrowserRouter>
-        </React.StrictMode>
-    )
+ReactDOM.render(
+    <React.StrictMode>
+        <BrowserRouter>
+        <Context.Provider value={{
+            user: new UserStore(),
+            manga: new MangaStore(),
+            cart: new CartStore(),
+            orders: new OrdersStore()
+        }}>
+            <App/>
+        </Context.Provider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
