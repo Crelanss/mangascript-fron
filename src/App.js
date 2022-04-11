@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, useNavigate} from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import AppRouter from './components/AppRouter'
+import NavBar from "./components/NavBar";
+import {Context} from "./index";
+import {useContext, useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
+import {check} from "./http/userAPI";
+import {Spinner} from "react-bootstrap";
+import {SHOP_ROUTE} from "./utils/consts";
+import {toJS} from "mobx";
+import {fetchAuthors, fetchGenres, fetchManga} from "./http/mangaAPI";
+
+
+const App = observer(() => {
+    const {user, manga} = useContext(Context)
+    const [loading, setLoading] = useState(true)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchGenres().then(data => manga.setGenres(data))
+        fetchAuthors().then(data => manga.setAuthors(data.authors))
+        fetchManga().then(data => manga.setMangas(data.mangas.rows))
+
+        check().then(data => {
+                user.setUser(data)
+                user.setIsAuth(true)
+        }).finally(() => {
+            setLoading(false)
+            if(toJS(user.isAuth) === false) {
+                navigate(SHOP_ROUTE)
+            }
+        })
+    }, [])
+
+    if (loading) {
+        return <Spinner animation={'grow'}/>
+    }
+
+    return (
+       <>
+            <NavBar/>
+            <AppRouter/>
+       </>
+    )
+})
 
 export default App;
