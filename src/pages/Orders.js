@@ -55,13 +55,14 @@ const Orders = observer(() => {
                     }
                 })
             })
-
+            console.log(userOrdersSorted)
             return userOrdersSorted
         }
     }
 
     const findManga = (id) => {
-        return toJS(manga.mangas).filter(m => m.mangaId === id)[0]
+        console.log(toJS(manga.mangas))
+        return toJS(manga.mangas).filter(m => m.id === id)[0]
     }
     return (
         <Container>
@@ -72,8 +73,8 @@ const Orders = observer(() => {
                         {
                             u.mangas.map(m =>
                                 <div className='d-flex mt-2'>
-                                    <Image src={apiUrl + findManga(m.mangaId).img} height={150} width={150}/>
-                                    <div>{findManga(m.mangaId).name + ': '}</div>
+                                    <Image src={apiUrl + findManga(m.manga).img} height={150} width={150}/>
+                                    <div>{findManga(m.manga).name + ': '}</div>
                                     <div>{m.quantity}</div>
                                 </div>
                             )

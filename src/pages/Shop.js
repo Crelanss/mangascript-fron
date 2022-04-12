@@ -7,11 +7,9 @@ import NameSearch from "../components/NameSearch";
 import MangaList from "../components/MangaList";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
-import {fetchAuthors, fetchGenres, fetchManga} from "../http/mangaAPI";
 
 
 const Shop = observer(() => {
-    const {manga} = useContext(Context)
 
     useEffect(() => {
 
